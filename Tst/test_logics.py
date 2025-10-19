@@ -10,7 +10,7 @@ from Src.Core.abstract_response import abstract_response
 class test_logics(unittest.TestCase):
 
     # Проверим формирование CSV
-    def test_notNone_response_csv_buld():
+    def test_notNone_response_csv_buld(self):
         # Подготовка
         response = response_scv()
         data = []
@@ -24,7 +24,7 @@ class test_logics(unittest.TestCase):
         assert result is not None
 
 
-    def test_notNone_factory_create():
+    def test_notNone_factory_create(self):
         # Подготовка
         factory = factory_entities()
         data = []

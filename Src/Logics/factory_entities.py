@@ -9,7 +9,7 @@ class factory_entities:
 
 
     # Получить нужный тип
-    def create(self, format:str) -> abstract_response
+    def create(self, format:str) -> abstract_response:
         if format not in self.__match.keys():
             raise operation_exception("Формат не верный")
         

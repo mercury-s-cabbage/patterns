@@ -1,7 +1,7 @@
 import abc
 from Src.Core.validator import validator, operation_exception
 
-# Абстрактный класс для фолрмирования ответов
+# Абстрактный класс для формирования ответов
 class abstract_response(abc.ABC):
     
     # Сформировать нужный ответ
