@@ -166,8 +166,10 @@ class start_service:
     """
     def start(self):
         self.file_name = "settings.json"
-        result = self.load()
-        if result == False:
+        try:
+            with open(self.file_name, "r", encoding="utf-8") as f:
+                result = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
             raise operation_exception("Невозможно сформировать стартовый набор данных!")
         
 
