@@ -1,49 +1,125 @@
 import unittest
-from Src.Logics.response_csv import response_scv
 from Src.Models.group_model import group_model
+from Src.Logics.response_csv import response_csv
+from Src.Logics.response_json import response_json
+from Src.Logics.response_xml import response_xml
+from Src.Logics.response_md import response_md
+from Src.Core.common import common
 from Src.Logics.factory_entities import factory_entities
 from Src.Core.response_format import response_formats
 from Src.Core.validator import validator
 from Src.Core.abstract_response import abstract_response
 
-# Тесты для проверки логики 
+
 class test_logics(unittest.TestCase):
 
-    # Проверим формирование CSV
-    def test_notNone_response_csv_buld(self):
-        # Подготовка
-        response = response_scv()
-        data = []
-        entity = group_model.create( "test" )
-        data.append( entity )
+    # Проверка, что CSV-ответ не None
+    def test_csv_create_not_empty(self):
+        resp = response_csv()
+        data = [group_model.create("test")]
+        result = resp.create("csv", data)
+        self.assertIsNotNone(result)
 
-        # Дейстие
-        result = response.create( "csv", data)
+    # Проверка, что JSON-ответ не None
+    def test_json_create_not_empty(self):
+        resp = response_json()
+        data = [group_model.create("test")]
+        result = resp.create("json", data)
+        self.assertIsNotNone(result)
 
-        # Проверка
-        assert result is not None
+    # Проверка, что Markdown-ответ не None
+    def test_md_create_not_empty(self):
+        resp = response_md()
+        data = [group_model.create("test")]
+        result = resp.create("md", data)
+        self.assertIsNotNone(result)
 
+    # Проверка, что XML-ответ не None
+    def test_xml_create_not_empty(self):
+        resp = response_xml()
+        data = [group_model.create("test")]
+        result = resp.create("xml", data)
+        self.assertIsNotNone(result)
 
-    def test_notNone_factory_create(self):
-        # Подготовка
+    # Проверяем, что фабрика создаёт корректный объект логики
+    def test_factory_produces_response_instance(self):
         factory = factory_entities()
-        data = []
-        entity = group_model.create( "test" )
-        data.append( entity )
+        data = [group_model.create("test")]
+        logic_cls = factory.create(response_formats.csv())
+        self.assertIsNotNone(logic_cls)
+        instance = logic_cls()
+        validator.validate(instance, abstract_response)
+        output = instance.create(response_formats.csv(), data)
+        self.assertGreater(len(output), 0)
 
-        # Действие
-        logic = factory.create( response_formats.csv )
+    # Проверка корректного состава данных в CSV
+    def test_csv_contains_all_fields_and_values(self):
+        resp = response_csv()
+        data = [group_model.create("test")]
+        fields = common.get_fields(data[0])
+        output = resp.create("csv", data)
 
-        # Проверка
-        assert logic is not None
-        instance =  eval(logic) # logic()
-        validator.validate( instance,  abstract_response)
-        text =    instance.build(  response_formats.csv , data )
-        assert len(text) > 0 
+        for field in fields:
+            self.assertIn(field, output)
+        for obj in data:
+            for field in fields:
+                val = str(getattr(obj, field, ""))
+                self.assertIn(val, output)
+
+    # Проверка корректного состава данных в JSON
+    def test_json_contains_all_fields_and_values(self):
+        resp = response_json()
+        data = [group_model.create("test")]
+        fields = common.get_fields(data[0])
+        output = resp.create("json", data)
+
+        for field in fields:
+            self.assertIn(field, output)
+        for obj in data:
+            for field in fields:
+                val = str(getattr(obj, field, ""))
+                self.assertIn(val, output)
+
+    # Проверка корректного состава данных в XML
+    def test_xml_contains_all_fields_and_values(self):
+        resp = response_xml()
+        data = [group_model.create("test")]
+        fields = common.get_fields(data[0])
+        output = resp.create("xml", data)
+
+        for field in fields:
+            self.assertIn(f"<{field}>", output)
+        for obj in data:
+            for field in fields:
+                val = str(getattr(obj, field, ""))
+                self.assertIn(val, output)
+
+    # Проверка корректного состава данных в Markdown
+    def test_md_contains_all_fields_and_values(self):
+        resp = response_md()
+        data = [group_model.create("test")]
+        fields = common.get_fields(data[0])
+        output = resp.create("md", data)
+
+        for field in fields:
+            self.assertIn(field, output)
+        for obj in data:
+            for field in fields:
+                val = str(getattr(obj, field, ""))
+                self.assertIn(val, output)
+
+    # Дополнительная проверка: структура заголовков CSV корректна
+    def test_csv_header_structure(self):
+        resp = response_csv()
+        data = [group_model.create("test")]
+        fields = common.get_fields(data[0])
+        output = resp.create("csv", data)
+        header_line = output.split("\n")[0]
+        for field in fields:
+            self.assertIn(field, header_line)
+
+    # Дополнительно можете добавить похожие проверки структуры markdown, xml, json
 
 
-
-        
-  
-if __name__ == '__main__':
-    unittest.main()   
+if __name__ == "__main__":
+    unittest.main()

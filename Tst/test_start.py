@@ -1,13 +1,13 @@
-
 import unittest
 from Src.start_service import start_service
 from Src.reposity import reposity
 
-# Набор тестов для проверки работы стартового сервиса
+
+# Набор тестов для проверки работы статового сервиса
 class test_start(unittest.TestCase):
 
     # Проверить создание start_service и заполнение данными
-    def test_notThrow_start_service_load(self):
+    def test_notThow_start_service_load(self):
         # Подготовка
         start = start_service()
 
@@ -15,9 +15,9 @@ class test_start(unittest.TestCase):
         start.start()
 
         # Проверка
-        assert len(start.data[ reposity.range_key()]) > 0
+        assert len(start.data[reposity.range_key()]) > 0
 
-    # Проверить уникальность элементов
+    # Проверить уникальность элемиентов
     def test_checkUnique_start_service_load(self):
         # Подготовка
         start = start_service()
@@ -30,25 +30,23 @@ class test_start(unittest.TestCase):
         kg = list(filter(lambda x: x.name == "Киллограмм", start.data[reposity.range_key()]))
         assert gramm[0].unique_code == kg[0].base.unique_code
 
-
     # Проверить метод keys класса reposity
     def test_any_reposity_keys(self):
         # Подготовка
 
         # Действие
         result = reposity.keys()
-        
+
         # Проверка
         assert len(result) > 0
 
-    # Проверить метод initalize класса reposity 
-    def test_notThrow_reposity_initialize(self):   
+    # Проверить метод initalize класса reposity
+    def test_notThrow_reposity_initialize(self):
         # Подготовка
         repo = reposity()
 
         # Действие
-        repo.initalize() 
+        repo.initalize()
 
 
 
-        

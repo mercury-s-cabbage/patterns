@@ -2,19 +2,23 @@ from Src.Core.abstract_response import abstract_response
 from Src.Core.common import common
 
 
-class response_scv(abstract_response):
+class response_csv(abstract_response):
 
-    # Сформировать CSV
-    def create(self, format:str, data: list):
-        text = super().create(format, data)
+    def create(self, fmt: str, dataset: list):
+        output = super().create(fmt, dataset)
 
-        # Шапка
-        item = data [ 0 ]
-        fields = common.get_fields( item )
-        for field in fields:
-            text += f"{field};"
+        if not dataset:
+            return output
 
-        # Данные
+        first_item = dataset[0]
+        cols = common.get_fields(first_item)
 
-        return text    
+        # Формируем заголовок CSV
+        output += ";".join(cols) + "\n"
 
+        # Добавляем строки данных
+        for record in dataset:
+            row = [str(getattr(record, col, '')) for col in cols]
+            output += ";".join(row) + "\n"
+
+        return output
