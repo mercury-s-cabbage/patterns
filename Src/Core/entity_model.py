@@ -2,7 +2,7 @@ from Src.Core.abstract_model import abstact_model
 from Src.Core.validator import validator
 
 """
-Общий класс для наследования. Содержит стандартное определение: код, наименование
+Общий класс для наследования. Содержит стандартное определение: код (наследуется из abstract_model), наименование
 """
 
 

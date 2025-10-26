@@ -7,10 +7,6 @@ import os
 import json
 from Src.Models.receipt_model import receipt_model
 from Src.Models.receipt_item_model import receipt_item_model
-from Src.Dtos.nomenclature_dto import nomenclature_dto
-from Src.Dtos.range_dto import range_dto
-from Src.Dtos.category_dto import category_dto
-from Src.Dtos.receipt_item_dto import receipt_item_dto
 
 
 class start_service:
@@ -58,7 +54,7 @@ class start_service:
             raise operation_exception("Не найден файл настроек!")
 
         try:
-            with open(self.__full_file_name, 'r') as file_instance:
+            with open(self.__full_file_name, 'r', encoding="UTF-8") as file_instance:
                 settings = json.load(file_instance)
 
                 if "default_receipt" in settings.keys():
@@ -68,6 +64,7 @@ class start_service:
             return False
         except Exception as e:
             error_message = str(e)
+            print(error_message)
             return False
 
     # Сохранить элемент в репозитории
@@ -119,7 +116,7 @@ class start_service:
 
         return True
 
-        # Обработать полученный словарь
+    # Обработать полученный словарь
 
     def convert(self, data: dict) -> bool:
         validator.validate(data, dict)

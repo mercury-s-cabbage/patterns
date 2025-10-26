@@ -78,3 +78,7 @@ def generate_data():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
+
+
+# GET http://127.0.0.1:8080/api/data?format=json&type=groups
+# GET http://127.0.0.1:8080/api/data?format=md&type=ranges

@@ -2,7 +2,6 @@ from Src.Core.abstract_model import abstact_model
 from Src.Models.nomenclature_model import nomenclature_model
 from Src.Models.range_model import range_model
 from Src.Core.validator import validator
-from Src.Dtos.receipt_item_dto import receipt_item_dto
 
 
 # Модель элемента рецепта
@@ -48,12 +47,4 @@ class receipt_item_model(abstact_model):
         item.__nomenclature = nomenclature
         item.__range = range
         item.__value = value
-        return item
-
-    # Фабричный метод из Dto
-    @staticmethod
-    def from_dto(dto:receipt_item_dto, cache:dict):
-        validator.validate(dto, receipt_item_dto)
-        validator.validate(cache, dict)
-        item = receipt_item_model.create(dto.nomenclature,dto.range, dto.value)
         return item
