@@ -1,17 +1,16 @@
 from Src.Core.entity_model import entity_model
-from Src.Core.abstract_model import abstact_model
 from Src.Core.validator import argument_exception
 
 # Набор статических общих методов
 class common:
 
     """
-    Получить список наименований всех моделей
+    Получить список наименований всех моделей, унаследованных от данной
     """
     @staticmethod
     def get_models() -> list:
         result = []
-        for  inheritor in entity_model.__subclasses__():
+        for inheritor in entity_model.__subclasses__():
             result.append(inheritor.__name__)
 
         return result    
