@@ -50,7 +50,7 @@ class test_models(unittest.TestCase):
     # Данные загружаем. Проверяем работу Singletone
     def test_loadCombo_createmodel_companymodel(self):
         # Подготовка
-        file_name = "./settings.json"
+        file_name = "settings.json"
         manager1 = settings_manager()
         manager1.file_name = file_name
         manager2 = settings_manager()
@@ -59,11 +59,11 @@ class test_models(unittest.TestCase):
         # Действие
         manager1.load()
 
+
         # Проверки
         assert manager1.settings == manager2.settings
-        print(manager1.file_name)
         assert (manager1.settings.company.inn == check_inn)
-        print(f"ИНН {manager1.settings.company.inn}")
+
 
     # Проверка на сравнение двух по значению одинаковых моделей
     def test_equals_storage_model_create(self):
